@@ -74,26 +74,28 @@ export class AppComponent {
                     this.savingEndpoint
                   );
 
-                  let documentSrvc = eViewerObj.getDocumentService();
-                  documentSrvc
-                    .loadDocumentWithOptions(
-                      'http://localhost:4200/assets/sample.pdf',
-                      'URL of annotation JSON',
-                      'unique ID of document',
-                      //optional parameter
-                      {
-                        isEditMode: true,
-                        tabStyle: {
-                          fileName: 'some-document-description-OUTFOCUS',
-                        },
-                        focusTabStyle: {
-                          fileName: 'some-document-description-INFOCUS',
-                        },
-                      }
-                    )
-                    .then((response) => {
-                      console.log(response);
-                    });
+                  setTimeout(() => {
+                    let documentSrvc = eViewerObj.getDocumentService();
+                    documentSrvc
+                      .loadDocumentWithOptions(
+                        'http://localhost:4200/assets/sample.pdf',
+                        '',
+                        '1',
+                        //optional parameter
+                        {
+                          isEditMode: true,
+                          tabStyle: {
+                            fileName: 'some-document-description-OUTFOCUS',
+                          },
+                          focusTabStyle: {
+                            fileName: 'some-document-description-INFOCUS',
+                          },
+                        }
+                      )
+                      .then((response) => {
+                        console.log(response);
+                      });
+                  }, 1000);
                 });
             });
         });
