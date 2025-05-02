@@ -7,13 +7,23 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'sample-angular-app';
+  viewerServerURL = 'http://localhost:8086/api/v1/';
+
+  savingEndpoint = (response) => {
+    return new Promise((resolve, reject) => {
+      console.info(response);
+      const { clientDocID, docContent, annContent, annMimeType, mimeType } =
+        response;
+      resolve('SUCCESS');
+    });
+  };
 
   ngAfterViewInit(): void {
     this.loadExternalScript('/viewer/js/eViewer7_angular.js').then(() => {
       let eViewerObj = null;
       eViewerObj = new (window as any).eViewerApp();
       const css = [
-        { href: './assets/viewer/styles.css' },
+        { href: './viewer/styles.css' },
         {
           href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css',
           integrity:
@@ -23,11 +33,11 @@ export class AppComponent {
       ];
 
       const scripts = [
-        './assets/viewer/runtime.js',
-        './assets/viewer/polyfills.js',
-        './assets/viewer/scripts.js',
-        './assets/viewer/main.js',
-        './assets/viewer/js/events.js',
+        './viewer/runtime.js',
+        './viewer/polyfills.js',
+        './viewer/scripts.js',
+        './viewer/main.js',
+        './viewer/js/events.js',
       ];
 
       var options = {
@@ -52,10 +62,39 @@ export class AppComponent {
           viewerPrefSrvc
             .getUserPreferences(undefined, undefined, true)
             .then((preferences) => {
-              viewerPrefSrvc.setUserPreferences(
-                JSON.stringify(preferences.userPreferences),
-                JSON.stringify(preferences.shortcutPreferences)
-              );
+              viewerPrefSrvc
+                .setUserPreferences(
+                  JSON.stringify(preferences.userPreferences),
+                  JSON.stringify(preferences.shortcutPreferences)
+                )
+                .then((response) => {
+                  eViewerObj.setDocumentEndPointOptions(
+                    options,
+                    this.viewerServerURL,
+                    this.savingEndpoint
+                  );
+
+                  let documentSrvc = eViewerObj.getDocumentService();
+                  documentSrvc
+                    .loadDocumentWithOptions(
+                      'http://localhost:4200/assets/sample.pdf',
+                      'URL of annotation JSON',
+                      'unique ID of document',
+                      //optional parameter
+                      {
+                        isEditMode: true,
+                        tabStyle: {
+                          fileName: 'some-document-description-OUTFOCUS',
+                        },
+                        focusTabStyle: {
+                          fileName: 'some-document-description-INFOCUS',
+                        },
+                      }
+                    )
+                    .then((response) => {
+                      console.log(response);
+                    });
+                });
             });
         });
     });
