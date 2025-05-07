@@ -40,8 +40,8 @@ declare class eViewerApp {
   onDocumentTabHover(callBack: any): any;
   loadViewer(
     containerID: string,
-    scripts: string,
-    styleSheets: string,
+    scripts: string[],
+    styleSheets: string[],
     fitStyle: string,
     options: any
   ): Promise<any>;
@@ -59,7 +59,7 @@ declare class eViewerApp {
   alignThumbnails(alignDirection: string): Promise<any>;
   deleteGroup(groupName: string): Promise<any>;
   unGroup(groupName: string): Promise<any>;
-  documentInfoByGroup(groupName: string): Promise<any;
+  documentInfoByGroup(groupName: string): Promise<any>;
   getGroupsInfo(): Promise<any>;
   setGroupsInfo(groupJson: any): Promise<any>;
   splitDocument(splitFromPageNo: string): Promise<any>;
@@ -92,14 +92,18 @@ declare class DocumentService {
   private loadWaitSpinner(): void;
   private loadAVFileByURL(avFile: any): Promise<any>;
 
-  insertDocument(file: any, options: any): Promise<any>; 
+  insertDocument(file: any, options: any): Promise<any>;
   loadDocumentWithOptions(
     docUrl: string,
     annotationUrl: any,
     clientDocID: string,
     options: any
   ): Promise<any>;
-  setDocumentumCredentials(username: string, password: string, repoType: string): Promise<any>;
+  setDocumentumCredentials(
+    username: string,
+    password: string,
+    repoType: string
+  ): Promise<any>;
   newDocument(filetype: string): Promise<any>;
   getOpenDocuments(): Promise<any>;
   getActiveDocument(): Promise<any>;
@@ -134,7 +138,11 @@ declare class DocumentService {
   filterPages(docId: string, pageFilters: any): Promise<any>;
   showOnlyPages(docId: string, pages: any): Promise<any>;
   hideOnlyPages(docId: string, pages: any): Promise<any>;
-  setDocumentTabStyle(viewerDocID: string, tabStyle: any, focusTabStyle: any): Promise<any>;
+  setDocumentTabStyle(
+    viewerDocID: string,
+    tabStyle: any,
+    focusTabStyle: any
+  ): Promise<any>;
   getDocumentTabStyle(viewerDocID: string): Promise<any>;
   setFileName(viewerDocID: string, fileName: string): Promise<any>;
   getFileName(viewerDocID: string): Promise<any>;
@@ -985,7 +993,12 @@ declare class AnnotationService {
   userName: string;
   private setUserName(userName: string): void;
   selectShape(annType: string, options: any): Promise<any>;
-  editShape(annId: string, pageNo: string, position: any, options: any): Promise<any>;
+  editShape(
+    annId: string,
+    pageNo: string,
+    position: any,
+    options: any
+  ): Promise<any>;
   deleteShape(pageNo: string, annId: string): Promise<any>;
   addReply(annId: string, replyText: string): Promise<any>;
   getAllReplies(annId: string): Promise<any>;
@@ -993,13 +1006,21 @@ declare class AnnotationService {
   private setactionScripts(): void;
   drawShapes(pageNo: number, position: any, options: any): Promise<any>;
   addLinkToAnnotation(annId: string, options: any): void;
-  updateCommentOrReply(annId: string, textUpdate: string, replyId: string): Promise<any>;
+  updateCommentOrReply(
+    annId: string,
+    textUpdate: string,
+    replyId: string
+  ): Promise<any>;
   removeReply(replyId: string, annId: string): Promise<any>;
   removeAllReplies(annId: string): Promise<any>;
   getReplyByUser(annId: string): Promise<any>;
   getAllAnnotations(userName: string): Promise<any>;
   getAnnotationDetails(annId: string): Promise<any>;
-  getFilteredAnnotations(userName: string, annType: string, pageNo: number): Promise<any>;
+  getFilteredAnnotations(
+    userName: string,
+    annType: string,
+    pageNo: number
+  ): Promise<any>;
   setDrawingMode(modeName: string): Promise<any>;
   getDrawingMode(): Promise<any>;
 }
