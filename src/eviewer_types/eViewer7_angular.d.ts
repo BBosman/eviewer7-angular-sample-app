@@ -41,7 +41,7 @@ declare class eViewerApp {
   loadViewer(
     containerID: string,
     scripts: string[],
-    styleSheets: string[],
+    styleSheets: Object[],
     fitStyle: string,
     options: any
   ): Promise<any>;
