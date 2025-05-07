@@ -20,8 +20,8 @@ export class AppComponent {
 
   ngAfterViewInit(): void {
     this.loadExternalScript('/viewer/js/eViewer7_angular.js').then(() => {
-      let eViewerObj = null;
-      eViewerObj = new (window as any).eViewerApp();
+      let eViewerObj: eViewerApp;
+      eViewerObj = new eViewerApp('dummy_user');
       const css = [
         { href: './viewer/styles.css' },
         {
