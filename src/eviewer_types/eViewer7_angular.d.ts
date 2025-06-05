@@ -45,34 +45,33 @@ declare class eViewerApp {
     fitStyle: string,
     options: any
   ): Promise<any>;
-  registerLicense(licenseKey: string, licenseServerUrl?: string): Promise<any>;
-  addContentSecurityPolicy(cspPolicy: string): Promise<any>;
+  registerLicense(licenseKey: string, licenseServerUrl?: string): void;
+  addContentSecurityPolicy(cspPolicy: string): void;
   enableShortcutWithoutClick(): void;
-  setUserType(userType: string): Promise<any>;
+  setUserType(userType: string): void;
   setDocumentEndPointOptions(
     options: any,
     eViewerUrl?: string,
     savingEndPoint?: any,
     ocrEndPoint?: string,
     hideToolBar?: boolean
-  ): Promise<any>;
-  alignThumbnails(alignDirection: string): Promise<any>;
+  ): void;
+  alignThumbnails(alignDirection: string): void;
   deleteGroup(groupName: string): Promise<any>;
-  unGroup(groupName: string): Promise<any>;
+  unGroup(groupName: string): void;
   documentInfoByGroup(groupName: string): Promise<any>;
   getGroupsInfo(): Promise<any>;
-  setGroupsInfo(groupJson: any): Promise<any>;
-  splitDocument(splitFromPageNo: string): Promise<any>;
-  changeDocumentView(documentViewFormat: string): Promise<any>;
-  hideAnnotations(hide: boolean): Promise<any>;
-  hideThumbnails(hide: boolean): Promise<any>;
-  selectPanning(pan: boolean): Promise<any>;
-  addButtons(buttons: any): Promise<any>;
-  updateButtons(buttons: any): Promise<any>;
-  removeButtons(buttons: any): Promise<any>;
-  registerAnnIndicator(callback: any): Promise<any>;
+  setGroupsInfo(groupJson: any): void;
+  splitDocument(splitFromPageNo: string): void;
+  changeDocumentView(documentViewFormat: string): void;
+  hideAnnotations(hide: boolean): void;
+  hideThumbnails(hide: boolean): void;
+  selectPanning(pan: boolean): void
+  addButtons(buttons: any): void;
+  updateButtons(buttons: any): void;
+  removeButtons(buttons: any): void;
   unloadViewer(): void;
-  setTabMenuHandler(fun: any): Promise<any>;
+  setTabMenuHandler(fun: any): void;
   getDocumentService(): DocumentService;
   getEditingService(): EditingService;
   getViewerPreferenceService(): ViewerPreferenceService;
@@ -103,7 +102,7 @@ declare class DocumentService {
     username: string,
     password: string,
     repoType: string
-  ): Promise<any>;
+  ): void;
   newDocument(filetype: string): Promise<any>;
   getOpenDocuments(): Promise<any>;
   getActiveDocument(): Promise<any>;
@@ -111,17 +110,17 @@ declare class DocumentService {
   closeDocument(viewerDocID?: string): Promise<any>;
   closeAllDocuments(viewerDocIDs?: any): Promise<any>;
   saveDocument(requireDataInResponse?: boolean): Promise<any>;
-  setWorkerSrcUrl(blankPageWorkerSrcUrl?: string): Promise<any>;
+  setWorkerSrcUrl(blankPageWorkerSrcUrl?: string): void;
   saveDocuments(docIDs?: any, requireDataInResponse?: boolean): Promise<any>;
   saveAllDocuments(): Promise<any>;
-  nextPage(): Promise<any>;
-  prevPage(): Promise<any>;
-  firstPage(): Promise<any>;
-  lastPage(): Promise<any>;
-  gotoPage(pageNo?: number): Promise<any>;
-  invertPages(pageNumbers?: any): Promise<any>;
-  setCustomStamps(customStamps?: any): Promise<any>;
-  copyToClipboard(pageNumbers?: number): Promise<any>;
+  nextPage(): void;
+  prevPage(): void;
+  firstPage(): void;
+  lastPage(): void;
+  gotoPage(pageNo?: number): void;
+  invertPages(pageNumbers?: any): void;
+  setCustomStamps(customStamps?: any): void;
+  copyToClipboard(pageNumbers?: number): void;
   appendDocument(file?: any, fileUrl?: string): Promise<any>;
   getPageCount(viewerDocID?: string): Promise<any>;
   getDocumentInfo(docId?: string): Promise<any>;
@@ -134,23 +133,23 @@ declare class DocumentService {
   gotoLastDocument(): Promise<any>;
   getActiveDocumentInfo(): Promise<any>;
   getPageInfo(docId: string, pageRange: string): Promise<any>;
-  searchText(text: any): Promise<any>;
-  filterPages(docId: string, pageFilters: any): Promise<any>;
-  showOnlyPages(docId: string, pages: any): Promise<any>;
-  hideOnlyPages(docId: string, pages: any): Promise<any>;
+  searchText(text: any): void;
+  filterPages(docId: string, pageFilters: any): void;
+  showOnlyPages(docId: string, pages: any): void;
+  hideOnlyPages(docId: string, pages: any): void;
   setDocumentTabStyle(
     viewerDocID: string,
     tabStyle: any,
     focusTabStyle: any
   ): Promise<any>;
   getDocumentTabStyle(viewerDocID: string): Promise<any>;
-  setFileName(viewerDocID: string, fileName: string): Promise<any>;
+  setFileName(viewerDocID: string, fileName: string): void;
   getFileName(viewerDocID: string): Promise<any>;
-  setSelectedPages(pages: any): Promise<any>;
+  setSelectedPages(pages: any): void;
   getSelectedPages(includeCurrentPage: boolean): Promise<any>;
-  clearSelectedPages(): Promise<any>;
+  clearSelectedPages(): void;
   getPageInfoByRange(docId: string, pageRange: any): Promise<any>;
-  setDocumentScrollMode(docId: string, scrollMode: string): Promise<any>;
+  setDocumentScrollMode(docId: string, scrollMode: string): void;
   getAttachments(docId: string): Promise<any>;
   undo(docId: string): Promise<any>;
   redo(docId: string): Promise<any>;
@@ -169,16 +168,16 @@ declare class EditingService {
   rotateByAngle(angle: number): Promise<any>;
   zoomTo(preset: string): Promise<any>;
   deletePage(): Promise<any>;
-  copyPage(): Promise<any>;
+  copyPage(): void;
   cutPage(): Promise<any>;
   pastePage(): Promise<any>;
   exportDocument(options: any): Promise<any>;
-  printDocument(options: any): Promise<any>;
-  snipArea(options: any): Promise<any>;
+  printDocument(options: any): void;
+  snipArea(options: any): void;
   docExportWithOptions(options: any): Promise<any>;
   getCurrentScale(docId: string): Promise<any>;
   getCurrentRotation(docId: string, pageNo: number): Promise<any>;
-  nativeDocumentDownloading(docId: string, filename: string): Promise<any>;
+  nativeDocumentDownloading(docId: string, filename: string): void;
 }
 
 declare class ViewerPreferenceService {
@@ -242,57 +241,7 @@ declare class ViewerPreferenceService {
             sideBysideViewHorizontal: boolean;
             textSearch: boolean;
             selectText: boolean;
-            cutCopyPaste?: undefined;
-            deletePage?: undefined;
-            checkpoint?: undefined;
-            appendDocument?: undefined;
-            watermark?: undefined;
-            snippingTool?: undefined;
-            blankPage?: undefined;
-            cropPage?: undefined;
-            line?: undefined;
-            arrow?: undefined;
-            circle?: undefined;
-            rectangle?: undefined;
-            pen?: undefined;
-            highlight?: undefined;
-            textAnnotation?: undefined;
-            stamp?: undefined;
-            polyLine?: undefined;
-            polygon?: undefined;
-            cloud?: undefined;
-            stickynote?: undefined;
-            button?: undefined;
-            showHideAnn?: undefined;
-            redactSelectText?: undefined;
-            redactWord?: undefined;
-            redaction?: undefined;
-            searchRedact?: undefined;
-            clearRedaction?: undefined;
-            redactPage?: undefined;
-            redactViewMode?: undefined;
-            drawSignature?: undefined;
-            previousPageSpeech?: undefined;
-            play?: undefined;
-            pause?: undefined;
-            stop?: undefined;
-            nextPageSpeech?: undefined;
-            speechSpeed?: undefined;
-            comparedocsView?: undefined;
-            startSync?: undefined;
-            closeCompareDocuments?: undefined;
-            comparePanel?: undefined;
-            addSnapshot?: undefined;
-            openSnapshotAsNewDocument?: undefined;
-            enableDisableCommentSubtitle?: undefined;
           };
-          isInsertTabVisible?: undefined;
-          isAnnotationTabVisible?: undefined;
-          isRedactTabVisible?: undefined;
-          isSignatureTabVisible?: undefined;
-          isSpeechTabVisible?: undefined;
-          isCompareTabVisible?: undefined;
-          isMedifyTabVisible?: undefined;
         }
       | {
           name: string;
@@ -306,58 +255,7 @@ declare class ViewerPreferenceService {
             snippingTool: boolean;
             blankPage: boolean;
             cropPage: boolean;
-            split?: undefined;
-            undo?: undefined;
-            invert?: undefined;
-            copyPgToClipboard?: undefined;
-            thumbnailView?: undefined;
-            sideBysideViewVertical?: undefined;
-            sideBysideViewHorizontal?: undefined;
-            textSearch?: undefined;
-            selectText?: undefined;
-            line?: undefined;
-            arrow?: undefined;
-            circle?: undefined;
-            rectangle?: undefined;
-            pen?: undefined;
-            highlight?: undefined;
-            textAnnotation?: undefined;
-            stamp?: undefined;
-            polyLine?: undefined;
-            polygon?: undefined;
-            cloud?: undefined;
-            stickynote?: undefined;
-            button?: undefined;
-            showHideAnn?: undefined;
-            redactSelectText?: undefined;
-            redactWord?: undefined;
-            redaction?: undefined;
-            searchRedact?: undefined;
-            clearRedaction?: undefined;
-            redactPage?: undefined;
-            redactViewMode?: undefined;
-            drawSignature?: undefined;
-            previousPageSpeech?: undefined;
-            play?: undefined;
-            pause?: undefined;
-            stop?: undefined;
-            nextPageSpeech?: undefined;
-            speechSpeed?: undefined;
-            comparedocsView?: undefined;
-            startSync?: undefined;
-            closeCompareDocuments?: undefined;
-            comparePanel?: undefined;
-            addSnapshot?: undefined;
-            openSnapshotAsNewDocument?: undefined;
-            enableDisableCommentSubtitle?: undefined;
           };
-          isViewTabVisible?: undefined;
-          isAnnotationTabVisible?: undefined;
-          isRedactTabVisible?: undefined;
-          isSignatureTabVisible?: undefined;
-          isSpeechTabVisible?: undefined;
-          isCompareTabVisible?: undefined;
-          isMedifyTabVisible?: undefined;
         }
       | {
           name: string;
@@ -377,52 +275,7 @@ declare class ViewerPreferenceService {
             stickynote: boolean;
             button: boolean;
             showHideAnn: boolean;
-            split?: undefined;
-            undo?: undefined;
-            invert?: undefined;
-            copyPgToClipboard?: undefined;
-            thumbnailView?: undefined;
-            sideBysideViewVertical?: undefined;
-            sideBysideViewHorizontal?: undefined;
-            textSearch?: undefined;
-            selectText?: undefined;
-            cutCopyPaste?: undefined;
-            deletePage?: undefined;
-            checkpoint?: undefined;
-            appendDocument?: undefined;
-            watermark?: undefined;
-            snippingTool?: undefined;
-            blankPage?: undefined;
-            cropPage?: undefined;
-            redactSelectText?: undefined;
-            redactWord?: undefined;
-            redaction?: undefined;
-            searchRedact?: undefined;
-            clearRedaction?: undefined;
-            redactPage?: undefined;
-            redactViewMode?: undefined;
-            drawSignature?: undefined;
-            previousPageSpeech?: undefined;
-            play?: undefined;
-            pause?: undefined;
-            stop?: undefined;
-            nextPageSpeech?: undefined;
-            speechSpeed?: undefined;
-            comparedocsView?: undefined;
-            startSync?: undefined;
-            closeCompareDocuments?: undefined;
-            comparePanel?: undefined;
-            addSnapshot?: undefined;
-            openSnapshotAsNewDocument?: undefined;
-            enableDisableCommentSubtitle?: undefined;
           };
-          isViewTabVisible?: undefined;
-          isInsertTabVisible?: undefined;
-          isRedactTabVisible?: undefined;
-          isSignatureTabVisible?: undefined;
-          isSpeechTabVisible?: undefined;
-          isCompareTabVisible?: undefined;
-          isMedifyTabVisible?: undefined;
         }
       | {
           name: string;
@@ -435,124 +288,14 @@ declare class ViewerPreferenceService {
             clearRedaction: boolean;
             redactPage: boolean;
             redactViewMode: boolean;
-            split?: undefined;
-            undo?: undefined;
-            invert?: undefined;
-            copyPgToClipboard?: undefined;
-            thumbnailView?: undefined;
-            sideBysideViewVertical?: undefined;
-            sideBysideViewHorizontal?: undefined;
-            textSearch?: undefined;
-            selectText?: undefined;
-            cutCopyPaste?: undefined;
-            deletePage?: undefined;
-            checkpoint?: undefined;
-            appendDocument?: undefined;
-            watermark?: undefined;
-            snippingTool?: undefined;
-            blankPage?: undefined;
-            cropPage?: undefined;
-            line?: undefined;
-            arrow?: undefined;
-            circle?: undefined;
-            rectangle?: undefined;
-            pen?: undefined;
-            highlight?: undefined;
-            textAnnotation?: undefined;
-            stamp?: undefined;
-            polyLine?: undefined;
-            polygon?: undefined;
-            cloud?: undefined;
-            stickynote?: undefined;
-            button?: undefined;
-            showHideAnn?: undefined;
-            drawSignature?: undefined;
-            previousPageSpeech?: undefined;
-            play?: undefined;
-            pause?: undefined;
-            stop?: undefined;
-            nextPageSpeech?: undefined;
-            speechSpeed?: undefined;
-            comparedocsView?: undefined;
-            startSync?: undefined;
-            closeCompareDocuments?: undefined;
-            comparePanel?: undefined;
-            addSnapshot?: undefined;
-            openSnapshotAsNewDocument?: undefined;
-            enableDisableCommentSubtitle?: undefined;
           };
-          isViewTabVisible?: undefined;
-          isInsertTabVisible?: undefined;
-          isAnnotationTabVisible?: undefined;
-          isSignatureTabVisible?: undefined;
-          isSpeechTabVisible?: undefined;
-          isCompareTabVisible?: undefined;
-          isMedifyTabVisible?: undefined;
         }
       | {
           name: string;
           isSignatureTabVisible: boolean;
           children: {
             drawSignature: boolean;
-            split?: undefined;
-            undo?: undefined;
-            invert?: undefined;
-            copyPgToClipboard?: undefined;
-            thumbnailView?: undefined;
-            sideBysideViewVertical?: undefined;
-            sideBysideViewHorizontal?: undefined;
-            textSearch?: undefined;
-            selectText?: undefined;
-            cutCopyPaste?: undefined;
-            deletePage?: undefined;
-            checkpoint?: undefined;
-            appendDocument?: undefined;
-            watermark?: undefined;
-            snippingTool?: undefined;
-            blankPage?: undefined;
-            cropPage?: undefined;
-            line?: undefined;
-            arrow?: undefined;
-            circle?: undefined;
-            rectangle?: undefined;
-            pen?: undefined;
-            highlight?: undefined;
-            textAnnotation?: undefined;
-            stamp?: undefined;
-            polyLine?: undefined;
-            polygon?: undefined;
-            cloud?: undefined;
-            stickynote?: undefined;
-            button?: undefined;
-            showHideAnn?: undefined;
-            redactSelectText?: undefined;
-            redactWord?: undefined;
-            redaction?: undefined;
-            searchRedact?: undefined;
-            clearRedaction?: undefined;
-            redactPage?: undefined;
-            redactViewMode?: undefined;
-            previousPageSpeech?: undefined;
-            play?: undefined;
-            pause?: undefined;
-            stop?: undefined;
-            nextPageSpeech?: undefined;
-            speechSpeed?: undefined;
-            comparedocsView?: undefined;
-            startSync?: undefined;
-            closeCompareDocuments?: undefined;
-            comparePanel?: undefined;
-            addSnapshot?: undefined;
-            openSnapshotAsNewDocument?: undefined;
-            enableDisableCommentSubtitle?: undefined;
           };
-          isViewTabVisible?: undefined;
-          isInsertTabVisible?: undefined;
-          isAnnotationTabVisible?: undefined;
-          isRedactTabVisible?: undefined;
-          isSpeechTabVisible?: undefined;
-          isCompareTabVisible?: undefined;
-          isMedifyTabVisible?: undefined;
         }
       | {
           name: string;
@@ -564,60 +307,7 @@ declare class ViewerPreferenceService {
             stop: boolean;
             nextPageSpeech: boolean;
             speechSpeed: boolean;
-            split?: undefined;
-            undo?: undefined;
-            invert?: undefined;
-            copyPgToClipboard?: undefined;
-            thumbnailView?: undefined;
-            sideBysideViewVertical?: undefined;
-            sideBysideViewHorizontal?: undefined;
-            textSearch?: undefined;
-            selectText?: undefined;
-            cutCopyPaste?: undefined;
-            deletePage?: undefined;
-            checkpoint?: undefined;
-            appendDocument?: undefined;
-            watermark?: undefined;
-            snippingTool?: undefined;
-            blankPage?: undefined;
-            cropPage?: undefined;
-            line?: undefined;
-            arrow?: undefined;
-            circle?: undefined;
-            rectangle?: undefined;
-            pen?: undefined;
-            highlight?: undefined;
-            textAnnotation?: undefined;
-            stamp?: undefined;
-            polyLine?: undefined;
-            polygon?: undefined;
-            cloud?: undefined;
-            stickynote?: undefined;
-            button?: undefined;
-            showHideAnn?: undefined;
-            redactSelectText?: undefined;
-            redactWord?: undefined;
-            redaction?: undefined;
-            searchRedact?: undefined;
-            clearRedaction?: undefined;
-            redactPage?: undefined;
-            redactViewMode?: undefined;
-            drawSignature?: undefined;
-            comparedocsView?: undefined;
-            startSync?: undefined;
-            closeCompareDocuments?: undefined;
-            comparePanel?: undefined;
-            addSnapshot?: undefined;
-            openSnapshotAsNewDocument?: undefined;
-            enableDisableCommentSubtitle?: undefined;
           };
-          isViewTabVisible?: undefined;
-          isInsertTabVisible?: undefined;
-          isAnnotationTabVisible?: undefined;
-          isRedactTabVisible?: undefined;
-          isSignatureTabVisible?: undefined;
-          isCompareTabVisible?: undefined;
-          isMedifyTabVisible?: undefined;
         }
       | {
           name: string;
@@ -627,62 +317,7 @@ declare class ViewerPreferenceService {
             startSync: boolean;
             closeCompareDocuments: boolean;
             comparePanel: boolean;
-            split?: undefined;
-            undo?: undefined;
-            invert?: undefined;
-            copyPgToClipboard?: undefined;
-            thumbnailView?: undefined;
-            sideBysideViewVertical?: undefined;
-            sideBysideViewHorizontal?: undefined;
-            textSearch?: undefined;
-            selectText?: undefined;
-            cutCopyPaste?: undefined;
-            deletePage?: undefined;
-            checkpoint?: undefined;
-            appendDocument?: undefined;
-            watermark?: undefined;
-            snippingTool?: undefined;
-            blankPage?: undefined;
-            cropPage?: undefined;
-            line?: undefined;
-            arrow?: undefined;
-            circle?: undefined;
-            rectangle?: undefined;
-            pen?: undefined;
-            highlight?: undefined;
-            textAnnotation?: undefined;
-            stamp?: undefined;
-            polyLine?: undefined;
-            polygon?: undefined;
-            cloud?: undefined;
-            stickynote?: undefined;
-            button?: undefined;
-            showHideAnn?: undefined;
-            redactSelectText?: undefined;
-            redactWord?: undefined;
-            redaction?: undefined;
-            searchRedact?: undefined;
-            clearRedaction?: undefined;
-            redactPage?: undefined;
-            redactViewMode?: undefined;
-            drawSignature?: undefined;
-            previousPageSpeech?: undefined;
-            play?: undefined;
-            pause?: undefined;
-            stop?: undefined;
-            nextPageSpeech?: undefined;
-            speechSpeed?: undefined;
-            addSnapshot?: undefined;
-            openSnapshotAsNewDocument?: undefined;
-            enableDisableCommentSubtitle?: undefined;
           };
-          isViewTabVisible?: undefined;
-          isInsertTabVisible?: undefined;
-          isAnnotationTabVisible?: undefined;
-          isRedactTabVisible?: undefined;
-          isSignatureTabVisible?: undefined;
-          isSpeechTabVisible?: undefined;
-          isMedifyTabVisible?: undefined;
         }
       | {
           name: string;
@@ -691,63 +326,7 @@ declare class ViewerPreferenceService {
             addSnapshot: boolean;
             openSnapshotAsNewDocument: boolean;
             enableDisableCommentSubtitle: boolean;
-            split?: undefined;
-            undo?: undefined;
-            invert?: undefined;
-            copyPgToClipboard?: undefined;
-            thumbnailView?: undefined;
-            sideBysideViewVertical?: undefined;
-            sideBysideViewHorizontal?: undefined;
-            textSearch?: undefined;
-            selectText?: undefined;
-            cutCopyPaste?: undefined;
-            deletePage?: undefined;
-            checkpoint?: undefined;
-            appendDocument?: undefined;
-            watermark?: undefined;
-            snippingTool?: undefined;
-            blankPage?: undefined;
-            cropPage?: undefined;
-            line?: undefined;
-            arrow?: undefined;
-            circle?: undefined;
-            rectangle?: undefined;
-            pen?: undefined;
-            highlight?: undefined;
-            textAnnotation?: undefined;
-            stamp?: undefined;
-            polyLine?: undefined;
-            polygon?: undefined;
-            cloud?: undefined;
-            stickynote?: undefined;
-            button?: undefined;
-            showHideAnn?: undefined;
-            redactSelectText?: undefined;
-            redactWord?: undefined;
-            redaction?: undefined;
-            searchRedact?: undefined;
-            clearRedaction?: undefined;
-            redactPage?: undefined;
-            redactViewMode?: undefined;
-            drawSignature?: undefined;
-            previousPageSpeech?: undefined;
-            play?: undefined;
-            pause?: undefined;
-            stop?: undefined;
-            nextPageSpeech?: undefined;
-            speechSpeed?: undefined;
-            comparedocsView?: undefined;
-            startSync?: undefined;
-            closeCompareDocuments?: undefined;
-            comparePanel?: undefined;
           };
-          isViewTabVisible?: undefined;
-          isInsertTabVisible?: undefined;
-          isAnnotationTabVisible?: undefined;
-          isRedactTabVisible?: undefined;
-          isSignatureTabVisible?: undefined;
-          isSpeechTabVisible?: undefined;
-          isCompareTabVisible?: undefined;
         }
     )[];
     general: {
@@ -829,38 +408,17 @@ declare class ViewerPreferenceService {
         fillColor: string;
         fillOpacity: string;
         borderColor: string;
-        borderOpacity?: undefined;
-        fontColor?: undefined;
-        fontOpacity?: undefined;
-        fontFace?: undefined;
-        fontSize?: undefined;
-        wrapText?: undefined;
       }
     | {
         annType: string;
         fillColor: string;
         fillOpacity: string;
-        borderWidth?: undefined;
-        borderColor?: undefined;
-        borderOpacity?: undefined;
-        fontColor?: undefined;
-        fontOpacity?: undefined;
-        fontFace?: undefined;
-        fontSize?: undefined;
-        wrapText?: undefined;
       }
     | {
         annType: string;
         borderWidth: string;
         borderOpacity: string;
         borderColor: string;
-        fillColor?: undefined;
-        fillOpacity?: undefined;
-        fontColor?: undefined;
-        fontOpacity?: undefined;
-        fontFace?: undefined;
-        fontSize?: undefined;
-        wrapText?: undefined;
       }
     | {
         annType: string;
@@ -869,24 +427,11 @@ declare class ViewerPreferenceService {
         borderOpacity: string;
         fillOpacity: string;
         borderColor: string;
-        fontColor?: undefined;
-        fontOpacity?: undefined;
-        fontFace?: undefined;
-        fontSize?: undefined;
-        wrapText?: undefined;
       }
     | {
         annType: string;
         borderWidth: string;
         fillColor: string;
-        fillOpacity?: undefined;
-        borderColor?: undefined;
-        borderOpacity?: undefined;
-        fontColor?: undefined;
-        fontOpacity?: undefined;
-        fontFace?: undefined;
-        fontSize?: undefined;
-        wrapText?: undefined;
       }
     | {
         annType: string;
@@ -899,33 +444,15 @@ declare class ViewerPreferenceService {
         fontFace: string;
         fontSize: string;
         wrapText: string;
-        borderOpacity?: undefined;
       }
     | {
         annType: string;
         fillColor: string;
         fontColor: string;
-        borderWidth?: undefined;
-        fillOpacity?: undefined;
-        borderColor?: undefined;
-        borderOpacity?: undefined;
-        fontOpacity?: undefined;
-        fontFace?: undefined;
-        fontSize?: undefined;
-        wrapText?: undefined;
       }
     | {
         annType: string;
         fillColor: string;
-        borderWidth?: undefined;
-        fillOpacity?: undefined;
-        borderColor?: undefined;
-        borderOpacity?: undefined;
-        fontColor?: undefined;
-        fontOpacity?: undefined;
-        fontFace?: undefined;
-        fontSize?: undefined;
-        wrapText?: undefined;
       }
     | {
         annType: string;
@@ -935,23 +462,12 @@ declare class ViewerPreferenceService {
         fontColor: string;
         fontFace: string;
         fontSize: string;
-        fillOpacity?: undefined;
-        borderOpacity?: undefined;
-        fontOpacity?: undefined;
-        wrapText?: undefined;
       }
     | {
         annType: string;
         borderWidth: string;
         fillColor: string;
         fillOpacity: string;
-        borderColor?: undefined;
-        borderOpacity?: undefined;
-        fontColor?: undefined;
-        fontOpacity?: undefined;
-        fontFace?: undefined;
-        fontSize?: undefined;
-        wrapText?: undefined;
       }
   )[];
   defaultActionScriptJSON: {
@@ -964,7 +480,7 @@ declare class ViewerPreferenceService {
     preferences?: any,
     shortcutPreferences?: any,
     annotationPferences?: any
-  ): Promise<any>;
+  ): void;
   getUserPreferences(
     defaultPrefJSON?: any,
     defaultShortcutPrefJSON?: any,
@@ -985,34 +501,34 @@ declare class WatermarkService {
   private setUserName(userName: string): void;
   addWatermark(properties: any): Promise<any>;
   editWatermark(properties: any): Promise<any>;
-  deleteWatermark(watermarkId: any): Promise<any>;
+  deleteWatermark(watermarkId: any): void;
 }
 
 declare class AnnotationService {
   constructor(userName: string);
   userName: string;
   private setUserName(userName: string): void;
-  selectShape(annType: string, options: any): Promise<any>;
+  selectShape(annType: string, options: any): void;
   editShape(
     annId: string,
     pageNo: string,
     position: any,
     options: any
-  ): Promise<any>;
-  deleteShape(pageNo: string, annId: string): Promise<any>;
-  addReply(annId: string, replyText: string): Promise<any>;
+  ): void;
+  deleteShape(pageNo: string, annId: string): void;
+  addReply(annId: string, replyText: string): void;
   getAllReplies(annId: string): Promise<any>;
   getStamps(loadFromAssets: boolean): Promise<any>;
   private setactionScripts(): void;
-  drawShapes(pageNo: number, position: any, options: any): Promise<any>;
+  drawShapes(pageNo: number, position: any, options: any): void;
   addLinkToAnnotation(annId: string, options: any): void;
   updateCommentOrReply(
     annId: string,
     textUpdate: string,
     replyId: string
-  ): Promise<any>;
-  removeReply(replyId: string, annId: string): Promise<any>;
-  removeAllReplies(annId: string): Promise<any>;
+  ): void;
+  removeReply(replyId: string, annId: string): void;
+  removeAllReplies(annId: string): void;
   getReplyByUser(annId: string): Promise<any>;
   getAllAnnotations(userName: string): Promise<any>;
   getAnnotationDetails(annId: string): Promise<any>;
@@ -1021,7 +537,7 @@ declare class AnnotationService {
     annType: string,
     pageNo: number
   ): Promise<any>;
-  setDrawingMode(modeName: string): Promise<any>;
+  setDrawingMode(modeName: string): void;
   getDrawingMode(): Promise<any>;
 }
 
@@ -1037,17 +553,17 @@ declare class SignatureService {
   constructor(userName: string);
   userName: string;
   private setUserName(userName: string): void;
-  setAvailableCertificates(certificates: any): any;
-  setAvailableAppearances(appearances: any): any;
+  setAvailableCertificates(certificates: any): void;
+  setAvailableAppearances(appearances: any): void;
 }
 
 declare class RedactionService {
-  drawRedaction(pageRange: any, position: any, options: any): Promise<any>;
-  redactWord(redactWord: string, options: any): Promise<any>;
-  clearRedaction(pageRange: any): Promise<any>;
-  redactExpressions(expressions: string, selectedTag: string): Promise<any>;
-  getDetails(pageRange: any): Promise<any>;
-  switchRedactViewMode(): Promise<any>;
+  drawRedaction(pageRange: any, position: any, options: any): void;
+  redactWord(redactWord: string, options: any): void;
+  clearRedaction(pageRange: any): void;
+  redactExpressions(expressions: string, selectedTag: string): void;
+  getDetails(pageRange: any): void;
+  switchRedactViewMode(): void;
   private setUserName(userName: string): void;
   userName: string;
 }
@@ -1056,9 +572,9 @@ declare class DocMetadataService {
   constructor(userName: string);
   userName: string;
   private setUserName(userName: string): void;
-  setMetaData(data: any): Promise<any>;
-  getMetaData(): Promise<any>;
   private getAllMetaData(data: any): Promise<any>;
+  setMetaData(data: any): void;
+  getMetaData(): Promise<any>;
 }
 
 declare class CallBackAPIService {
