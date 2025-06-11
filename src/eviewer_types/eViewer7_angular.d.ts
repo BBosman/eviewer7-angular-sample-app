@@ -12,16 +12,17 @@ declare class eViewerApp {
   setDocumentEndPointOptions(
     options: DocumentEndPointOptions,
     eViewerUrl?: string,
-    // There is a discepancy between the docs at https://eviewer.net/developer-guide and this sample app.
-    // The docs refer to `string | Function`, while the sample app allows (and provides) a Promise returning Function.
-    // The sample app appears to be correct, although the `string` in the return type is suspicious.
-    savingEndPoint?: string | ((response: DocumentSaveObject) => Promise<string>),
+    savingEndPoint?:
+      | string
+      | ((response: DocumentSaveObject) => Promise<string>),
     ocrEndPoint?: string
   ): Promise<void>;
   registerLicense(licenseKey: string, licenseServerUrl?: string): Promise<void>;
   setScannerPluginURL(scannerPluginUrl: string): Promise<void>;
   toggleThumbnail(): Promise<void>;
-  alignThumbnails(alignDirection: 'LEFT' | 'RIGHT' | 'TOP' | 'BOTTOM'): Promise<void>;
+  alignThumbnails(
+    alignDirection: 'LEFT' | 'RIGHT' | 'TOP' | 'BOTTOM'
+  ): Promise<void>;
   hideAnnotations(hide: boolean): Promise<void>;
   hideThumbnails(hide: boolean): Promise<void>;
   selectPanning(pan: boolean): Promise<void>;
@@ -35,36 +36,48 @@ declare class eViewerApp {
   getAnnotationService(): AnnotationService;
   getSignatureService(): SignatureService;
   getRedactionService(): RedactionService;
-  // This is mentioned in the docs at https://eviewer.net/developer-guide, but has no implememtation details there.
-  // getIconService(): IconService;
   getIconCacheManagerService(): IconCacheManagerService;
   getDocMeatDataService(): DocMetadataService;
   getCallBackAPIService(): CallBackAPIService;
-  onDocumentTabHover(callback: (viewerDocID: string, inFocus: boolean) => void): void;
-  setDocumentNameTooltipDirection(direction: 'DEFAULT' | 'WEST' | 'EAST' | 'NORTH' | 'SOUTH'): Promise<void>;
+  onDocumentTabHover(
+    callback: (viewerDocID: string, inFocus: boolean) => void
+  ): void;
+  setDocumentNameTooltipDirection(
+    direction: 'DEFAULT' | 'WEST' | 'EAST' | 'NORTH' | 'SOUTH'
+  ): Promise<void>;
   addContentSecurityPolicy(cspPolicy: string): Promise<void>;
   splitDocument(splitFromPageNo: string | number): Promise<void>;
-  changeDocumentView(documentViewFormat: 'normalView' | 'thumbView' | 'sideBySideView'): Promise<void>;
+  changeDocumentView(
+    documentViewFormat: 'normalView' | 'thumbView' | 'sideBySideView'
+  ): Promise<void>;
   unloadViewer(): void;
   setTabMenuHandler(fun: (docID: string) => MenuItem[]): Promise<void>;
-
-  // These were in the definitions, but are undocumented in the docs at https://eviewer.net/developer-guide
-  /*
-  addJS(scripts: any, containerID: any): void;
-  addCSS(styleSheets: any): void;
   enableShortcutWithoutClick(): void;
-  registerAnnIndicator(callback: any): Promise<any>;
-  */
 }
 
 declare class DocumentService {
-  insertDocument(file: { name: string; type: string; size: number }, options: { pageFilters: PageFilter[] }): Promise<string>;
+  insertDocument(
+    file: { name: string; type: string; size: number },
+    options: { pageFilters: PageFilter[] }
+  ): Promise<string>;
   loadDocumentWithOptions(
     docUrl:
       | string
-      | { docUrl: string; requestType: string; requestContentType: string; requestBody: string }
+      | {
+          docUrl: string;
+          requestType: string;
+          requestContentType: string;
+          requestBody: string;
+        }
       | { documentId: string; displayName: string }[],
-    annotationUrl: string | { annUrl: string; requestType: string; requestContentType: string; requestBody: string },
+    annotationUrl:
+      | string
+      | {
+          annUrl: string;
+          requestType: string;
+          requestContentType: string;
+          requestBody: string;
+        },
     clientDocID?: string,
     options?: LoadDocumentOptions
   ): Promise<{ viewerDocID: string; clientDocID: string }>;
@@ -78,7 +91,10 @@ declare class DocumentService {
   closeDocument(viewerDocID?: string): Promise<{ viewerDocID: string }>;
   closeAllDocuments(): Promise<void>;
   saveDocument(requireDataInResponse?: boolean): Promise<DocumentSaveObject>;
-  saveDocuments(docIDs?: string[], requireDataInResponse?: boolean): Promise<DocumentSaveObject[]>;
+  saveDocuments(
+    docIDs?: string[],
+    requireDataInResponse?: boolean
+  ): Promise<DocumentSaveObject[]>;
   saveAllDocuments(): Promise<void>;
   nextPage(): Promise<void>;
   prevPage(): Promise<void>;
@@ -90,10 +106,12 @@ declare class DocumentService {
   gotoPreviousDocument(): Promise<string>;
   gotoFirstDocument(): Promise<string>;
   gotoLastDocument(): Promise<string>;
-  appendDocument(file: { name: string; type: string; size: number }, base64FileData: string): Promise<number>;
+  appendDocument(
+    file: { name: string; type: string; size: number },
+    base64FileData: string
+  ): Promise<number>;
   getPageCount(docId: string): Promise<number>;
-  // The docs at https://eviewer.net/developer-guide mention both a return type of Promise<number> and Promise<{ success: boolean }>, which is it?
-  filterPages(docId: string, pageFilters: PageFilter[]): Promise<{ success: boolean }>;
+  filterPages(docId: string, pageFilters: PageFilter[]): void;
   showOnlyPages(docId: string, pages: number[]): Promise<{ success: boolean }>;
   hideOnlyPages(docId: string, pages: number[]): Promise<{ success: boolean }>;
   getActiveDocumentInfo(): Promise<DocumentInfo>;
@@ -101,14 +119,33 @@ declare class DocumentService {
     docId: string,
     pageRange: number | number[]
   ): Promise<
-    { pageNo: number; visible: boolean; height: number; width: number; xDPI: number; yDPI: number; bitDepth: 1 | 4 | 8 | 16 | 24 | 32 }[]
+    {
+      pageNo: number;
+      visible: boolean;
+      height: number;
+      width: number;
+      xDPI: number;
+      yDPI: number;
+      bitDepth: 1 | 4 | 8 | 16 | 24 | 32;
+    }[]
   >;
   searchText(text: string): Promise<number>;
   invertPages(pageNumbers: number[]): Promise<void>;
-  setDocumentTabStyle(viewerDocID: string, tabStyle: StyleObject, focusTabStyle: StyleObject): Promise<void>;
-  getDocumentTabStyle(viewerDocID: string): Promise<{ style: StyleObject; focusStyle: StyleObject }>;
-  getAttachments(docId: string): Promise<{ content: Uint8Array; name: string }[]>;
-  setDocumentScrollMode(docId: string, scrollMode: 'page' | 'continuous'): Promise<void>;
+  setDocumentTabStyle(
+    viewerDocID: string,
+    tabStyle: StyleObject,
+    focusTabStyle: StyleObject
+  ): Promise<void>;
+  getDocumentTabStyle(
+    viewerDocID: string
+  ): Promise<{ style: StyleObject; focusStyle: StyleObject }>;
+  getAttachments(
+    docId: string
+  ): Promise<{ content: Uint8Array; name: string }[]>;
+  setDocumentScrollMode(
+    docId: string,
+    scrollMode: 'page' | 'continuous'
+  ): Promise<void>;
   getDocumentInfo(docId: string): Promise<DocumentInfo>;
   getAllDocumentInfo(): Promise<DocumentInfo[]>;
   setDirty(docID: string, dirty: boolean): Promise<void>;
@@ -121,13 +158,6 @@ declare class DocumentService {
   undo(): Promise<void>;
   redo(): Promise<void>;
   copyToClipboard(pageNo: number): Promise<void>;
-
-  // These were in the definitions, but are undocumented in the docs at https://eviewer.net/developer-guide
-  /*
-  setWorkerSrcUrl(blankPageWorkerSrcUrl?: string): Promise<any>;
-  setFileName(viewerDocID: string, fileName: string): Promise<any>;
-  getFileName(viewerDocID: string): Promise<any>;
-  */
 }
 
 declare class EditingService {
@@ -138,18 +168,38 @@ declare class EditingService {
   rotateCounterClockwise(): Promise<number>;
   rotate180(): Promise<number>;
   rotateByAngle(angle: 90 | 180 | 270): Promise<number>;
-  zoomTo(preset: 'Fit To Width' | 'Fit To Window' | 'Fit To Height' | 'Actual Size'): Promise<number>;
+  zoomTo(
+    preset: 'Fit To Width' | 'Fit To Window' | 'Fit To Height' | 'Actual Size'
+  ): Promise<number>;
   deletePage(): Promise<void>;
   copyPage(): Promise<void>;
   cutPage(): Promise<void>;
   pastePage(): Promise<void>;
-  snipArea(options: { pageNo: number; startX: number; endX: number; startY: number; endY: number }): Promise<void>;
+  snipArea(options: {
+    pageNo: number;
+    startX: number;
+    endX: number;
+    startY: number;
+    endY: number;
+  }): Promise<void>;
   nativeDocumentDownloading(docId: string, filename: string): Promise<void>;
-  getCurrentScale(docId: string): Promise<{ docId: string; scale: number; zoomPreset: 'fitToWindow' | 'fitToWidth' | 'none' }>;
-  getCurrentRotation(docId: string, pageNo: number): Promise<{ docId: string; rotation: 0 | 90 | 180 | 270 }>;
+  getCurrentScale(docId: string): Promise<{
+    docId: string;
+    scale: number;
+    zoomPreset: 'fitToWindow' | 'fitToWidth' | 'none';
+  }>;
+  getCurrentRotation(
+    docId: string,
+    pageNo: number
+  ): Promise<{ docId: string; rotation: 0 | 90 | 180 | 270 }>;
   docExportWithOptions(options: {
     exportType: 'DOWNLOAD' | 'EXPORT' | 'PRINT';
-    pageFilters: 'currentPage' | 'currentDocument' | 'selectedPages' | 'allDocuments' | number[];
+    pageFilters:
+      | 'currentPage'
+      | 'currentDocument'
+      | 'selectedPages'
+      | 'allDocuments'
+      | number[];
     // The docs at https://eviewer.net/developer-guide has the types as uppercase, but the sample uses lowercase. Seems suspicious?
     exportAs: 'PDF' | 'TIFF';
     includeAnnotations: boolean;
@@ -159,13 +209,20 @@ declare class EditingService {
 }
 
 declare class ViewerPreferenceService {
-  setUserPreferences(preferences?: string, shortcutPreferences?: string, annotationPreferences?: AnnotationPreference[]): Promise<void>;
+  setUserPreferences(
+    preferences?: string,
+    shortcutPreferences?: string,
+    annotationPreferences?: AnnotationPreference[]
+  ): Promise<void>;
   getUserPreferences(
     defaultPrefJSON?: UserPreferences,
     defaultShortcutPrefJSON?: ShortcutPreferences,
     defaultAnnotationPrefJSON?: AnnotationPreference[],
     loadFromAssets?: boolean
-  ): Promise<{ userPreferences: UserPreferences; shortcutPreferences: ShortcutPreferences }>;
+  ): Promise<{
+    userPreferences: UserPreferences;
+    shortcutPreferences: ShortcutPreferences;
+  }>;
 }
 
 declare class WatermarkService {
@@ -192,11 +249,27 @@ declare class WatermarkService {
 
 declare class AnnotationService {
   selectShape(
-    annType: 'line' | 'arrow' | 'circle' | 'rectangle' | 'highlight' | 'stamp' | 'text' | 'stickynote' | 'checkpoint',
-    options: { stampType: 'imageStamp' | 'textStamp'; info: { mimeType: string; stampName: string; stampURL: string }[] }
+    annType:
+      | 'line'
+      | 'arrow'
+      | 'circle'
+      | 'rectangle'
+      | 'highlight'
+      | 'stamp'
+      | 'text'
+      | 'stickynote'
+      | 'checkpoint',
+    options: {
+      stampType: 'imageStamp' | 'textStamp';
+      info: { mimeType: string; stampName: string; stampURL: string }[];
+    }
   ): Promise<void>;
-  getStamps(loadFromAssets: boolean): Promise<{ mimeType: string; stampName: string; stampURL: string }[]>;
-  setCustomStamps(customStamps: { mimeType: string; stampName: string; stampURL: string }[]): Promise<boolean>;
+  getStamps(
+    loadFromAssets: boolean
+  ): Promise<{ mimeType: string; stampName: string; stampURL: string }[]>;
+  setCustomStamps(
+    customStamps: { mimeType: string; stampName: string; stampURL: string }[]
+  ): Promise<boolean>;
   drawShapes(
     pageNo: number,
     position: { X: number; Y: number; Width: number; Height: number },
@@ -244,7 +317,10 @@ declare class AnnotationService {
     | 'checkpoint'
     | 'none'
   >;
-  addLinkToAnnotation(annId: string, options: { url: string; pageNo: number }): Promise<void>;
+  addLinkToAnnotation(
+    annId: string,
+    options: { url: string; pageNo: number }
+  ): Promise<void>;
   editShape(
     annId: string,
     pageNo: string,
@@ -261,7 +337,9 @@ declare class AnnotationService {
     }
   ): Promise<void>;
   deleteShape(pageNo: string, annId: string): Promise<void>;
-  getAllAnnotations(userName?: string): Promise<{ annID: string; pgNo: string }[]>;
+  getAllAnnotations(
+    userName?: string
+  ): Promise<{ annID: string; pgNo: string }[]>;
   getAnnotationDetails(annId: string): Promise<{
     Id: string;
     annCreatorName: string;
@@ -306,10 +384,18 @@ declare class AnnotationService {
       textValue: string;
     }[]
   >;
-  updateCommentOrReply(annId: string, textUpdate: string, replyId: string): Promise<void>;
+  updateCommentOrReply(
+    annId: string,
+    textUpdate: string,
+    replyId: string
+  ): Promise<void>;
   addReply(annId: string, replyText: string): Promise<void>;
-  getReplyByUser(annId: string): Promise<{ id: string; userName: string; time: string; message: string }[]>;
-  getAllReplies(annId: string): Promise<{ id: string; userName: string; time: string; message: string }[]>;
+  getReplyByUser(
+    annId: string
+  ): Promise<{ id: string; userName: string; time: string; message: string }[]>;
+  getAllReplies(
+    annId: string
+  ): Promise<{ id: string; userName: string; time: string; message: string }[]>;
   removeReply(replyId: string, annId: string): Promise<void>;
   removeAllReplies(annId: string): Promise<void>;
 }
@@ -325,23 +411,48 @@ declare class RedactionService {
       redactionTag: RedactionTag;
     }
   ): Promise<void>;
-  redactWord(redactWord: string, options: { wholeWord: boolean; caseSensitive: boolean; selectedTag: RedactionTag }): Promise<void>;
+  redactWord(
+    redactWord: string,
+    options: {
+      wholeWord: boolean;
+      caseSensitive: boolean;
+      selectedTag: RedactionTag;
+    }
+  ): Promise<void>;
   clearRedaction(pageRange: number[]): Promise<void>;
-  redactExpressions(expressions: string, selectedTag: RedactionTag): Promise<void>;
+  redactExpressions(
+    expressions: string,
+    selectedTag: RedactionTag
+  ): Promise<void>;
   getDetails(pageRange: number[]): Promise<RedactionDetailResponse>;
   switchRedactViewMode(): Promise<void>;
 }
 
 declare class IconCacheManagerService {
   invalidateThumbnailIconForPages(
-    options: { docId: string; pgNo: number; vLocation?: 'TOP' | 'CENTER' | 'BOTTOM'; hLocation?: 'LEFT' | 'RIGHT' | 'CENTER' }[]
+    options: {
+      docId: string;
+      pgNo: number;
+      vLocation?: 'TOP' | 'CENTER' | 'BOTTOM';
+      hLocation?: 'LEFT' | 'RIGHT' | 'CENTER';
+    }[]
   ): Promise<void>;
-  getCacheInfo(): Promise<{ memoryUsed: number; memoryAvailable: string; details: { docId: string; cacheEntries: number }[] }>;
+  getCacheInfo(): Promise<{
+    memoryUsed: number;
+    memoryAvailable: string;
+    details: { docId: string; cacheEntries: number }[];
+  }>;
 }
 
 declare class SignatureService {
   setAvailableCertificates(
-    certificates: { certificate: string; commonName: string; expiry: string; issuedBy: string; password: string }[]
+    certificates: {
+      certificate: string;
+      commonName: string;
+      expiry: string;
+      issuedBy: string;
+      password: string;
+    }[]
   ): void;
   setAvailableAppearances(appearances: string[]): void;
 }
@@ -352,7 +463,15 @@ declare class DocMetadataService {
       id: string;
       title: string;
       value: string | number | object[];
-      type: 'string' | 'number' | 'booelan' | 'date' | 'time' | 'date&time' | 'singleChoice' | 'multipleChoices';
+      type:
+        | 'string'
+        | 'number'
+        | 'booelan'
+        | 'date'
+        | 'time'
+        | 'date&time'
+        | 'singleChoice'
+        | 'multipleChoices';
       constraints: {
         maxLength: number;
         minLength: number;
@@ -369,7 +488,15 @@ declare class DocMetadataService {
       id: string;
       title: string;
       value: string | number | object[];
-      type: 'string' | 'number' | 'booelan' | 'date' | 'time' | 'date&time' | 'singleChoice' | 'multipleChoices';
+      type:
+        | 'string'
+        | 'number'
+        | 'booelan'
+        | 'date'
+        | 'time'
+        | 'date&time'
+        | 'singleChoice'
+        | 'multipleChoices';
       constraints: {
         maxLength: number;
         minLength: number;
@@ -384,18 +511,36 @@ declare class DocMetadataService {
 }
 
 declare class CallBackAPIService {
-  setPageChangedCallback(callback: (docID: string, pageNo: number) => void): void;
-  setDocLoadCompleteCallback(callback: (docID: string) => void): void;
-  setFirstPageRenderedCallback(callback: (docID: string, time: string) => void): void;
-  setDocSaveCompleteCallback(
-    callback: (docID: string, response: { filePath: string; jsonpath: string; documentData: string; annotationData: string }) => void
+  setPageChangedCallback(
+    callback: (docID: string, pageNo: number) => void
   ): void;
-  setDocSplitCallback(callback: (baseDocID: string, splitDocID: string) => void): void;
+  setDocLoadCompleteCallback(callback: (docID: string) => void): void;
+  setFirstPageRenderedCallback(
+    callback: (docID: string, time: string) => void
+  ): void;
+  setDocSaveCompleteCallback(
+    callback: (
+      docID: string,
+      response: {
+        filePath: string;
+        jsonpath: string;
+        documentData: string;
+        annotationData: string;
+      }
+    ) => void
+  ): void;
+  setDocSplitCallback(
+    callback: (baseDocID: string, splitDocID: string) => void
+  ): void;
   setDocDroppedCallback(callback: (docID: string) => void): void;
   // Parameter order differs between description and sample code in the docs. Which is it?
-  setAnnCreatedCallback(callback: (docID: string, pageNo: number, annID: string) => void): void;
+  setAnnCreatedCallback(
+    callback: (docID: string, pageNo: number, annID: string) => void
+  ): void;
   // Parameter order differs between description and sample code in the docs. Which is it?
-  setAnnDeletedCallback(callback: (docID: string, pageNo: number, annID: string) => void): void;
+  setAnnDeletedCallback(
+    callback: (docID: string, pageNo: number, annID: string) => void
+  ): void;
   setAnnPropUpdatedCallback(
     callback: (
       docID: string,
@@ -421,18 +566,44 @@ declare class CallBackAPIService {
     ) => void
   ): void;
   setDrawingModeChangeCallback(callback: (drawingMode: string) => void): void;
-  setWmPropUpdatedCallback(callback: (docId: string, wmId: number) => void): void;
+  setWmPropUpdatedCallback(
+    callback: (docId: string, wmId: number) => void
+  ): void;
   // According to the docs buttonText is a JSON object, but that appears to be a mistake?
-  setButtonAnnClickedCallback(callback: (docID: string, pageNo: number, annID: string, buttonText: string) => void): void;
-  setDocExportedCallback(callback: (docId: string, selectionOption: string) => void): void;
-  setPageDeletedCallback(callback: (docId: string, pageNo: number) => void): void;
+  setButtonAnnClickedCallback(
+    callback: (
+      docID: string,
+      pageNo: number,
+      annID: string,
+      buttonText: string
+    ) => void
+  ): void;
+  setDocExportedCallback(
+    callback: (docId: string, selectionOption: string) => void
+  ): void;
+  setPageDeletedCallback(
+    callback: (docId: string, pageNo: number) => void
+  ): void;
   setPageCutCallback(callback: (docId: string, pageNo: number) => void): void;
-  setPageCopiedCallback(callback: (docId: string, pageNo: number) => void): void;
-  setPagePastedCallback(callback: (docId: string, pageNo: number) => void): void;
+  setPageCopiedCallback(
+    callback: (docId: string, pageNo: number) => void
+  ): void;
+  setPagePastedCallback(
+    callback: (docId: string, pageNo: number) => void
+  ): void;
   setTextSelectedCallback(
     callback: (response: {
       eventType: string;
-      coordinates: { x1: number; y1: number; x2: number; y2: number; x3: number; y3: number; x4: number; y4: number }[];
+      coordinates: {
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+        x3: number;
+        y3: number;
+        x4: number;
+        y4: number;
+      }[];
       text: string;
       page: number;
       screenInfo: { width: number; height: number };
@@ -442,13 +613,31 @@ declare class CallBackAPIService {
   ): void;
   // No documentation on the shape of the certificate JSON object. Made the assumption it's the same as passed to `setAvailableCertificates`
   setNewCertificateCallback(
-    callback: (certificate: { certificate: string; commonName: string; expiry: string; issuedBy: string; password: string }) => void
+    callback: (certificate: {
+      certificate: string;
+      commonName: string;
+      expiry: string;
+      issuedBy: string;
+      password: string;
+    }) => void
   ): void;
   // No documentation on the shape of the certificate JSON object. Made the assumption it's the same as passed to `setAvailableCertificates`
   setUpdateDefaultCertificateCallback(
     callback: (certificate: {
-      newDefaultCertificate: { certificate: string; commonName: string; expiry: string; issuedBy: string; password: string };
-      oldDefaultCertificate: { certificate: string; commonName: string; expiry: string; issuedBy: string; password: string };
+      newDefaultCertificate: {
+        certificate: string;
+        commonName: string;
+        expiry: string;
+        issuedBy: string;
+        password: string;
+      };
+      oldDefaultCertificate: {
+        certificate: string;
+        commonName: string;
+        expiry: string;
+        issuedBy: string;
+        password: string;
+      };
     }) => void
   ): void;
   setNewAppearanceCallback(callback: (appearance: string) => void): void;
@@ -463,13 +652,33 @@ declare class CallBackAPIService {
   ): void;
   // I'm confused as the docs state Scale is not a number, but in the sample JSON in the same docs it is?
   setZoomChangeCallback(
-    callback: (zoomData: { clientDocID: string; docID: string; scale: number; zoomPreset: 'fitToWidth' | 'fitToWindow' }) => void
+    callback: (zoomData: {
+      clientDocID: string;
+      docID: string;
+      scale: number;
+      zoomPreset: 'fitToWidth' | 'fitToWindow';
+    }) => void
   ): void;
   setOnContextMenuCallback(
     callback: (info: {
-      location: 'documentView' | 'pageThumbnails' | 'docThumbnails' | 'toolbar' | 'docTab';
-      docInfo: { docID: string; clientDocID: string; fileName: string; currentPageNo: number };
-      eventInfo: { pageNo: number; rotation: 0 | 90 | 180 | 270; width: number; height: number };
+      location:
+        | 'documentView'
+        | 'pageThumbnails'
+        | 'docThumbnails'
+        | 'toolbar'
+        | 'docTab';
+      docInfo: {
+        docID: string;
+        clientDocID: string;
+        fileName: string;
+        currentPageNo: number;
+      };
+      eventInfo: {
+        pageNo: number;
+        rotation: 0 | 90 | 180 | 270;
+        width: number;
+        height: number;
+      };
       screenInfo: { width: number; height: number };
       // Docs say Cords instead of the expected Coords?
       viewportCords: { x: number; y: number };
@@ -481,8 +690,12 @@ declare class CallBackAPIService {
     }) => void
   ): void;
   setDocRedactCallback(callback: (docId: string) => void): void;
-  setTabSwitchCallback(callback: (outFocusViewerID: string, inFocusViewerID: string) => void): void;
-  setRotationCallback(callback: (docId: string, pageNo: number, rotation: string) => void): void;
+  setTabSwitchCallback(
+    callback: (outFocusViewerID: string, inFocusViewerID: string) => void
+  ): void;
+  setRotationCallback(
+    callback: (docId: string, pageNo: number, rotation: string) => void
+  ): void;
 }
 
 interface DocumentSaveObject {
@@ -499,7 +712,16 @@ interface DocumentSaveObject {
 
 interface LoadViewerOptions {
   // In the docs `docThumbnails` is missing as an option here, but as the sample app uses it and `setOnContextMenuCallback` allows it I think that's a documentation bug.
-  contextMenuOptions: { overrideContextMenus: boolean; location: ('documentView' | 'pageThumbnails' | 'docThumbnails' | 'toolbar' | 'docTab')[] };
+  contextMenuOptions: {
+    overrideContextMenus: boolean;
+    location: (
+      | 'documentView'
+      | 'pageThumbnails'
+      | 'docThumbnails'
+      | 'toolbar'
+      | 'docTab'
+    )[];
+  };
 }
 
 interface DocumentEndPointOptions {
@@ -531,7 +753,10 @@ interface RightToolbarButton extends ToolbarButtonBase {
   alignment: 'rightToolbar';
 }
 
-type ToolbarButton = RibbonToolbarButton | LeftToolbarButton | RightToolbarButton;
+type ToolbarButton =
+  | RibbonToolbarButton
+  | LeftToolbarButton
+  | RightToolbarButton;
 
 interface MenuItemBase {
   type: 'menuitem' | 'seperator';
@@ -559,7 +784,16 @@ interface PageFilter {
 interface StyleObject {
   backgroundColor?: `#${string}`;
   color?: `#${string}`;
-  fontWeight?: '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
+  fontWeight?:
+    | '100'
+    | '200'
+    | '300'
+    | '400'
+    | '500'
+    | '600'
+    | '700'
+    | '800'
+    | '900';
   fontStyle?: 'normal' | 'italic' | 'underline';
   fileName?: string;
   icon?: string;
@@ -966,7 +1200,14 @@ interface ShortcutPreferences {
   }[];
 }
 
-type RedactionTag = 'Confidential' | 'Prohibited' | 'Sensitive' | 'Important' | 'Restricted' | 'SSN' | 'Account Detail';
+type RedactionTag =
+  | 'Confidential'
+  | 'Prohibited'
+  | 'Sensitive'
+  | 'Important'
+  | 'Restricted'
+  | 'SSN'
+  | 'Account Detail';
 
 interface RedactionDetailResponse {
   docId: string;
