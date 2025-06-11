@@ -10,9 +10,10 @@ export class AppComponent {
   viewerServerURL = 'http://localhost:8086/api/v1/';
 
   savingEndpoint = (response) => {
-    return new Promise((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
       console.info(response);
-      const { clientDocID, docContent, annContent, annMimeType, mimeType } =
+      // According to https://eviewer.net/developer-guide/#Document_Save_Object there is no annMimeType property?
+      const { clientDocID, docContent, annContent/*, annMimeType*/, mimeType } =
         response;
       resolve('SUCCESS');
     });
@@ -40,7 +41,7 @@ export class AppComponent {
         './viewer/js/events.js',
       ];
 
-      var options = {
+      var viewerOptions: LoadViewerOptions = {
         contextMenuOptions: {
           overrideContextMenus: true,
           location: [
@@ -52,15 +53,24 @@ export class AppComponent {
           ],
         },
       };
+
+      var documentEndPointOptions: DocumentEndPointOptions = {
+        type: 'GET',
+        headers: {},
+        savePayLoadType: 'application/json'
+      }
+
       eViewerObj
-        .loadViewer('viewer', scripts, css, 'best-fit', options)
+        // It should be `bestFit` instead of `best-fit` according to the docs
+        .loadViewer('viewer', scripts, css, 'bestFit', viewerOptions)
         .then(() => {
           eViewerObj.registerLicense(
             'QX0ZUhau5qt0HBLnDQ5XcL+Ih625vvsKCk3fjacNqa/3+F6sDkQFUkso2z6Fi9z/w7MhHwhp0K7q0eX/agSjfY/q9HOBHnr7f4TY81KZosgmOKn0PnHHc0te9+Ps4anZ8G0Ub1lsIO2vL6CNpB5yjHeWY1E+0M7GFQYdtXowd4brMwfESdAvLEPibII77mwVmNvGzyEzNUpX1Krknne2vJzI8+jKs93zu0ADdxPUz1aPqeTTVhwokyPx6aE5aMQJA7/vTBJiIha4h7YX3oWjhgYJWch5AWbrki1VMM/2TetT4DqIzWMXUKWfQqWMHfg43vtIlwDv3ZYSBTZuT+Y3Smp7WbyCHPzoaSY0Bd0DpzJoGIhMr223ike9gqQBfknTQ9cbT0DRlXhjFOgZMaN4NHyKwiLQ6RYLBnFuSR1p1pgYrI4Hqr1/OC1ljSxiuuarUFA9lZ9ptOoWy89UGgR0Yrl1hb6GapM5vso/A6KwMdk='
           );
           let viewerPrefSrvc = eViewerObj.getViewerPreferenceService();
           viewerPrefSrvc
-            .getUserPreferences(undefined, undefined, true)
+            // The third argument to getUserPreferences is not a boolean according to the docs?
+            .getUserPreferences(undefined, undefined)
             .then((preferences) => {
               viewerPrefSrvc
                 .setUserPreferences(
@@ -69,7 +79,8 @@ export class AppComponent {
                 )
                 .then((response) => {
                   eViewerObj.setDocumentEndPointOptions(
-                    options,
+                    // It was reusing the `loadViewer` options, which seems incorrect.
+                    documentEndPointOptions,
                     this.viewerServerURL,
                     this.savingEndpoint
                   );
